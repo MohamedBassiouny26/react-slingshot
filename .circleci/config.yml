@@ -30,7 +30,16 @@ jobs:
             - "npm-package"
       - run: npm i
       - run: npm run test
-
+  anaylize:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - "npm-package"
+      - run: npm i
+      - run: npm audit
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
@@ -40,3 +49,6 @@ workflows:
       - test:
           requires:
             - build
+      - anaylize:
+          requires:
+            - test
